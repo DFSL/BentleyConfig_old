@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>fileTypes</key>
+	<array>
+		<string>cfg</string>
+		<string>pcf</string>
+		<string>ucf</string>
+	</array>
+	<key>name</key>
+	<string>Bentley Config Files</string>
+	<key>patterns</key>
+	<array>
+		<dict>
+			<key>match</key>
+			<string>#.*</string>
+			<key>name</key>
+			<string>comment.line.number-sign.bentleyConfig</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.operator.bentleyConfig</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>^(\t|\s)*[a-zA-Z0-9_]*(\t|\s)*(=|:|&lt;|&gt;|\+)</string>
+			<key>name</key>
+			<string>variable.bentleyConfig</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>variable.parameter.bentleyConfig</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>\$\(([a-zA-Z0-9_]+)\)</string>
+			<key>name</key>
+			<string>string.interpolated.bentleyConfig</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>%(include|if|else|elif|endif|error)\s+(defined|exists)?</string>
+			<key>name</key>
+			<string>keyword.control.bentleyConfig</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>variable.bentleyConfig</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>%(undef|lock) ([a-zA-Z0-9_]+)</string>
+			<key>name</key>
+			<string>keyword.control.bentleyConfig</string>
+		</dict>
+	</array>
+	<key>scopeName</key>
+	<string>source.bentleyConfig</string>
+	<key>uuid</key>
+	<string>4f7d61f2-6b40-47cf-89e0-ecc5f86d5fe8</string>
+</dict>
+</plist>
