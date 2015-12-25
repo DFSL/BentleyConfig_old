@@ -1,0 +1,113 @@
+{ "name": "Bentley Config Files",
+  "scopeName": "source.bentleyConfig",
+  "fileTypes": ["cfg","pcf","ucf"],
+  "patterns": [
+    { "include": "#VarDefRef" },
+
+    { "comment": "Comments",
+      "name": "comment.line.number-sign.bentleyConfig",
+      "match": "#.*"
+    },
+
+    { "comment": "Levels",
+      "name": "keyword.other.bentleyConfig",
+      "match": "%\\s*level\\s+([0-9]{1})",
+      "captures": {
+          "1": { "name": "constant.numeric.bentleyConfig" }
+      }
+    },
+
+    { "comment": "VarDef",
+      "name": "variable.other.bentleyConfig",
+      "match": "^\\s*[a-zA-Z0-9_]*\\s*(=|:|<|>|\\+)",
+      "captures": {
+        "1": { "name": "keyword.operator.bentleyConfig" }
+      }
+    },
+
+    { "comment": "Flow control",
+      "name": "keyword.control.bentleyConfig",
+      "match": "%\\s*(if|else|elif|endif|ifdef)\\s+"
+    },
+
+    { "comment": "Include",
+      "name": "source.bentleyConfig",
+      "begin": "%\\s*include\\s+",
+      "end": "$",
+      "beginCaptures": {
+        "0" : { "name": "keyword.control.bentleyConfig" }
+      },
+      "patterns": [
+          { "include": "#VarDefRef" },
+          { "comment": "Levels",
+            "name": "keyword.other.bentleyConfig",
+            "match": "level\\s+([0-9]{1})",
+            "captures": {
+              "1": { "name": "constant.numeric.bentleyConfig" }
+            }
+          }
+      ]
+    },
+
+    { "comment": "Error",
+      "name": "keyword.control.bentleyConfig",
+      "match": "%\\s*error\\s+"
+    },
+
+    { "comment": "Undef / Lock",
+      "name": "keyword.control.bentleyConfig",
+      "match": "%\\s*(undef|lock)\\s*([a-zA-Z0-9_]+)",
+      "captures": {
+          "2": { "name": "variable.parameter.bentleyConfig" }
+       }
+    },
+
+    {
+      "name": "source.bentleyConfig",
+      "begin": "((defined|exists)\\s*\\()",
+      "end": "(\\))",
+      "beginCaptures": {
+        "1" : { "name": "keyword.control.bentleyConfig" }
+      },
+      "endCaptures": {
+        "0" : { "name": "keyword.control.bentleyConfig" }
+      },
+      "patterns": [
+          { "include": "#VarDefRef" },
+          { "include": "#ConfigVar" }
+      ]
+    }
+
+
+
+  ],
+  "uuid": "4f7d61f2-6b40-47cf-89e0-ecc5f86d5fe8",
+  
+  "repository": {
+  
+    "ConfigVar": {
+      "name": "variable.parameter.bentleyConfig",
+      "match": "[a-zA-Z0-9_]+"
+    },
+
+    "VarDefRef": {
+      "comment": "Variable Definition References",
+      "name": "string.interpolated.bentleyConfig",
+      "begin": "\\$[\\(\\{]",
+      "end": "[\\)\\}]",
+      "patterns": [
+        { "include": "#ConfigVar" },
+        {
+          "name": "keyword.control.bentleyConfig",
+          "begin": "(dev|dir|devdir|parentdir|parentdevdir|basename|filename|ext|noext|first|concat|build)\\s*[\\(\\{]",
+          "end": "[\\)\\}]",
+          "patterns": [
+            { "include": "#ConfigVar" }
+          ]
+        }
+      ]
+    }
+
+  }
+
+}

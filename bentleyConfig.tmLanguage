@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
 	<key>fileTypes</key>
@@ -13,6 +13,12 @@
 	<key>patterns</key>
 	<array>
 		<dict>
+			<key>include</key>
+			<string>#VarDefRef</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Comments</string>
 			<key>match</key>
 			<string>#.*</string>
 			<key>name</key>
@@ -21,16 +27,18 @@
 		<dict>
 			<key>captures</key>
 			<dict>
-				<key>3</key>
+				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>keyword.operator.bentleyConfig</string>
+					<string>constant.numeric.bentleyConfig</string>
 				</dict>
 			</dict>
+			<key>comment</key>
+			<string>Levels</string>
 			<key>match</key>
-			<string>^(\t|\s)*[a-zA-Z0-9_]*(\t|\s)*(=|:|&lt;|&gt;|\+)</string>
+			<string>%\s*level\s+([0-9]{1})</string>
 			<key>name</key>
-			<string>variable.bentleyConfig</string>
+			<string>keyword.other.bentleyConfig</string>
 		</dict>
 		<dict>
 			<key>captures</key>
@@ -38,17 +46,70 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>variable.parameter.bentleyConfig</string>
+					<string>keyword.operator.bentleyConfig</string>
 				</dict>
 			</dict>
+			<key>comment</key>
+			<string>VarDef</string>
 			<key>match</key>
-			<string>\$\(([a-zA-Z0-9_]+)\)</string>
+			<string>^\s*[a-zA-Z0-9_]*\s*(=|:|&lt;|&gt;|\+)</string>
 			<key>name</key>
-			<string>string.interpolated.bentleyConfig</string>
+			<string>variable.other.bentleyConfig</string>
 		</dict>
 		<dict>
+			<key>comment</key>
+			<string>Flow control</string>
 			<key>match</key>
-			<string>%(include|if|else|elif|endif|error)\s+(defined|exists)?</string>
+			<string>%\s*(if|else|elif|endif|ifdef)\s+</string>
+			<key>name</key>
+			<string>keyword.control.bentleyConfig</string>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>%\s*include\s+</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.bentleyConfig</string>
+				</dict>
+			</dict>
+			<key>comment</key>
+			<string>Include</string>
+			<key>end</key>
+			<string>$</string>
+			<key>name</key>
+			<string>source.bentleyConfig</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#VarDefRef</string>
+				</dict>
+				<dict>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>constant.numeric.bentleyConfig</string>
+						</dict>
+					</dict>
+					<key>comment</key>
+					<string>Levels</string>
+					<key>match</key>
+					<string>level\s+([0-9]{1})</string>
+					<key>name</key>
+					<string>keyword.other.bentleyConfig</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Error</string>
+			<key>match</key>
+			<string>%\s*error\s+</string>
 			<key>name</key>
 			<string>keyword.control.bentleyConfig</string>
 		</dict>
@@ -58,15 +119,95 @@
 				<key>2</key>
 				<dict>
 					<key>name</key>
-					<string>variable.bentleyConfig</string>
+					<string>variable.parameter.bentleyConfig</string>
 				</dict>
 			</dict>
+			<key>comment</key>
+			<string>Undef / Lock</string>
 			<key>match</key>
-			<string>%(undef|lock) ([a-zA-Z0-9_]+)</string>
+			<string>%\s*(undef|lock)\s*([a-zA-Z0-9_]+)</string>
 			<key>name</key>
 			<string>keyword.control.bentleyConfig</string>
 		</dict>
+		<dict>
+			<key>begin</key>
+			<string>((defined|exists)\s*\()</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.bentleyConfig</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>(\))</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.bentleyConfig</string>
+				</dict>
+			</dict>
+			<key>name</key>
+			<string>source.bentleyConfig</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#VarDefRef</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#ConfigVar</string>
+				</dict>
+			</array>
+		</dict>
 	</array>
+	<key>repository</key>
+	<dict>
+		<key>ConfigVar</key>
+		<dict>
+			<key>match</key>
+			<string>[a-zA-Z0-9_]+</string>
+			<key>name</key>
+			<string>variable.parameter.bentleyConfig</string>
+		</dict>
+		<key>VarDefRef</key>
+		<dict>
+			<key>begin</key>
+			<string>\$[\(\{]</string>
+			<key>comment</key>
+			<string>Variable Definition References</string>
+			<key>end</key>
+			<string>[\)\}]</string>
+			<key>name</key>
+			<string>string.interpolated.bentleyConfig</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#ConfigVar</string>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>(dev|dir|devdir|parentdir|parentdevdir|basename|filename|ext|noext|first|concat|build)\s*[\(\{]</string>
+					<key>end</key>
+					<string>[\)\}]</string>
+					<key>name</key>
+					<string>keyword.control.bentleyConfig</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#ConfigVar</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 	<key>scopeName</key>
 	<string>source.bentleyConfig</string>
 	<key>uuid</key>
